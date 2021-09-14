@@ -17,14 +17,14 @@ public class MainTest {
     @Before
     public void setUpStreams() {
         new Main();
-        this.arguments = new String[]{"4", "*", "3"};
+        this.arguments = new String[]{"20", "*", "3"};
         System.setOut(new PrintStream(output));
     }
 
     @Test
     public void mainTest() throws InvalidPropertiesFormatException {
         Main.main(arguments);
-        Assert.assertEquals("12", output.toString().trim());
+        Assert.assertEquals("60", output.toString().trim());
     }
 
     @After
@@ -40,7 +40,7 @@ public class MainTest {
     public void prepareThreeArgumentsAndParser(){
         new Main();
         correctArguments = new String[]{"1", "+", "3"};
-        wrongArguments = new String[]{"k", ")", "3", "6"};
+        wrongArguments = new String[]{"l", ")", "3", "6"};
     }
 
 
@@ -63,25 +63,25 @@ public class MainTest {
     }
 
     @Test
-    public void parseOperator_plus() throws InvalidPropertiesFormatException {
+    public void parseOperatorPlus() throws InvalidPropertiesFormatException {
         var operator = Main.parseOperatorOrError("+");
         Assert.assertEquals("+",operator);
     }
 
     @Test
-    public void parseOperator_minus() throws InvalidPropertiesFormatException {
+    public void parseOperatorMinus() throws InvalidPropertiesFormatException {
         var operator = Main.parseOperatorOrError("-");
         Assert.assertEquals("-",operator);
     }
 
     @Test
-    public void parseOperator_multiply() throws InvalidPropertiesFormatException {
+    public void parseOperatorMultiply() throws InvalidPropertiesFormatException {
         var operator = Main.parseOperatorOrError("*");
         Assert.assertEquals("*",operator);
     }
 
     @Test
-    public void parseOperator_divide() throws InvalidPropertiesFormatException {
+    public void parseOperatorDivide() throws InvalidPropertiesFormatException {
         var operator = Main.parseOperatorOrError("/");
         Assert.assertEquals("/",operator);
     }
