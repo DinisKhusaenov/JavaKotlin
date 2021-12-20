@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="/addUser">Добавить пользователя</a>
+<br/><br/>
+<div>
+    <h1>Список пользователей</h1>
+    <table>
+        <tr th:each ="user : ${users}">
+            <td th:text="${user.username}">text</td>
+            <td th:text="${user.firstname}">text</td>
+            <td th:text="${user.lastname}">text</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
