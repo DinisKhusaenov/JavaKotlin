@@ -11,6 +11,7 @@ public class Calculator {
                 return sum;
             }
             case "*" -> {return val1 * val2;}
+
             default -> throw new ArithmeticException("That isn`t correct!");
         }
     }
