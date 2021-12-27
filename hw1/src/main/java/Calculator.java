@@ -10,6 +10,7 @@ public class Calculator {
                 case "*" -> result = val1 * val2;
                 case "/" -> result = val1 / val2;
             }
+
             System.out.print("Result is: " + result);
         }
     }
