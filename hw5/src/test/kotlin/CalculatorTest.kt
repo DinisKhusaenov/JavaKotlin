@@ -1,61 +1,110 @@
+import arrow.core.Either
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
 class CalculatorTest {
-    private val os = ByteArrayOutputStream()
-    private val calculator = Calculator()
-
-    @Before
-    fun setUpStreams() {
-        System.setOut(PrintStream(os))
-    }
-
     @Test
-    fun multiplicationTest() {
-        calculator.calculate(17, "*", 2)
-        Assert.assertEquals("Result is: 34", os.toString())
-    }
-
-    @Test
-    fun divisionTest() {
-        calculator.calculate(8, "/", 2)
-        Assert.assertEquals("Result is: 4", os.toString())
-    }
-
-    @Test
-    fun zeroDivisionTest() {
-        calculator.calculate(8, "/", 0)
-        Assert.assertEquals("Сan't divide by 0", os.toString())
-    }
-
-    @Test
-    fun additionTest() {
-        calculator.calculate(5, "+", 7)
-        Assert.assertEquals("Result is: 12", os.toString())
-    }
-
-    @Test
-    fun subtractionTest() {
-        calculator.calculate(11, "-", 3)
-        Assert.assertEquals("Result is: 8", os.toString())
+    fun incorrectNumberOfArgumentsTest() {
+        runBlocking {
+            val ans = returnAns(arrayOf("1", "+", "2", "3"))
+            Assert.assertEquals(Either.Left(CalculatorException.IncorrectNumOfArgs), ans)
+        }
     }
 
     @Test
     fun incorrectOperatorTest() {
-        calculator.calculate(1, "+*", 2)
-        Assert.assertEquals("Incorrect operator", os.toString())
+        runBlocking {
+            val ans = returnAns(arrayOf("1", "|", "2"))
+            Assert.assertEquals(Either.Left(CalculatorException.IncorrectOperator), ans)
+        }
     }
 
     @Test
-    fun intTest() {
-        Assert.assertTrue(calculator.isInt("34"))
+    fun zeroDivisionTest() {
+        runBlocking {
+            val ans = returnAns(arrayOf("1", "/", "0"))
+            Assert.assertEquals(Either.Left(CalculatorException.ZeroDivision), ans)
+        }
     }
 
     @Test
-    fun notIntTest() {
-        Assert.assertFalse(calculator.isInt("0'="))
+    fun incorrectFirstArgumentTest() {
+        runBlocking {
+            val ans = returnAns(arrayOf("a", "+", "2"))
+            Assert.assertEquals(Either.Left(CalculatorException.IncorrectArgument), ans)
+        }
+    }
+
+    @Test
+    fun incorrectSecondArgumentTest() {
+        runBlocking {
+            val ans = returnAns(arrayOf("1", "+", "a"))
+            Assert.assertEquals(Either.Left(CalculatorException.IncorrectArgument), ans)
+        }
+    }
+
+    @Test
+    fun intAddTest() {
+        runBlocking {
+            val ans = returnAns(arrayOf("1", "+", "2"))
+            Assert.assertEquals(Either.Right(3), ans)
+        }
+    }
+
+    @Test
+    fun doubleSubtractTest() {
+        runBlocking {
+            val ans = returnAns(arrayOf("1.5", "-", "2"))
+            Assert.assertEquals(Either.Right(-0.5), ans)
+        }
+    }
+
+    @Test
+    fun doubleMultiplyTest() {
+        runBlocking {
+            val ans = returnAns(arrayOf("3.42888396391", "*", "7.2838387732729"))
+            Assert.assertEquals(Either.Right(24.975437965381335), ans)
+        }
+    }
+
+    @Test
+    fun intDivideTest() {
+        runBlocking {
+            val ans = returnAns(arrayOf("5", "/", "2"))
+            Assert.assertEquals(Either.Right(2), ans)
+        }
+    }
+
+    @Test
+    fun notIntDivideTest() {
+        runBlocking {
+            val ans = returnAns(arrayOf("5.0", "/", "2"))
+            Assert.assertEquals(Either.Right(2.5), ans)
+        }
+    }
+
+    @Test
+    fun intCalculateTest() {
+        runBlocking {
+            val ans = calculate(Pair(3, 5), "+")
+            Assert.assertEquals(Either.Right(8), ans)
+        }
+    }
+
+    @Test
+    fun floatCalculateTest() {
+        runBlocking {
+            val ans = calculate(Pair(9.4f, 3.2f), "-")
+            Assert.assertEquals(Either.Right(6.2f), ans)
+        }
+    }
+
+    @Test
+    fun doubleCalculateTest() {
+        runBlocking {
+            val ans = calculate(Pair(1.34, 3.49), "*")
+            Assert.assertEquals(Either.Right(4.6766000000000005), ans)
+        }
     }
 }
