@@ -2,8 +2,8 @@ package org.example
 
 class Calculator {
 
-    fun add(a: Int, b: Int) = a + b
-    fun multiply(a: Int, b: Int) = a * b
-    fun divide(a: Int, b: Int) = a / b
-    fun subtract(a: Int, b: Int) = a - b
+    fun add(a: Double, b: Double) = a + b
+    fun multiply(a: Double, b: Double) = a * b
+    fun divide(a: Double, b: Double) = a / b
+    fun subtract(a: Double, b: Double) = a - b
 }
